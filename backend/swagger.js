@@ -12,7 +12,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000/api', // Adjust to your local or deployed server URL
+        url: 'https://amr-blog.onrender.com/api', // Change to your Render deployment URL
       },
     ],
     components: {
@@ -30,7 +30,7 @@ const options = {
       },
     ],
   },
-  apis: ['./routes/*.js'], // Point to the folder where your routes are located
+  apis: ['./routes/*.js'], // Points to your routes folder
 };
 
 const swaggerSpec = swaggerJsdoc(options);
