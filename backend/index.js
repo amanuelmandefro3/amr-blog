@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 
 // Enable CORS
-app.use(cors()); // Ensure this middleware is applied correctly
+// app.use(cors()); 
 
 // Initialize Swagger docs
 swaggerDocs(app);
@@ -32,5 +32,5 @@ app.get('/test', (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
+    // console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
 });

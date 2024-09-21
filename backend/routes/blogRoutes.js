@@ -3,6 +3,42 @@
  * tags:
  *   name: Blogs
  *   description: API for managing blogs
+ * components:
+ *   schemas:
+ *     Blog:
+ *       type: object
+ *       required:
+ *         - title
+ *         - content
+ *         - text
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: Blog's title
+ *           required: true
+ *         content:
+ *           type: string
+ *           description: Blog's content
+ *           required: true
+ *         text:
+ *           type: string
+ *           description: Comment's content or text
+ *           required: true
+ *         tags:
+ *           type: array
+ *           description: Optional tags related to the blog
+ *           items:
+ *             type: string
+ *           example: ["JavaScript", "Async", "Programming"]
+ *           required: false
+ *         imageUrl:
+ *           type: string
+ *           description: URL of the image used as the background of the title
+ *           required: false
+ *         query:
+ *           type: string
+ *           description: Query used to search the blog
+ *           required: false
  */
 
 const express = require('express');
@@ -23,14 +59,92 @@ const authMiddleware = require('../middlewares/authMiddleware');
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Blog'
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 description: Title of the blog
+ *                 example: "Understanding Async/Await in JavaScript"
+ *               imageUrl:
+ *                 type: string
+ *                 description: Optional background image URL for the blog title
+ *                 example: "https://example.com/background-image.png"
+ *               content:
+ *                 type: array
+ *                 description: Content blocks of the blog
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     type:
+ *                       type: string
+ *                       enum: ['text', 'image', 'code', 'embed', 'video']
+ *                       description: Type of content block
+ *                       example: 'text'
+ *                     data:
+ *                       type: object
+ *                       description: Data for the content block
+ *                       properties:
+ *                         text:
+ *                           type: string
+ *                           description: Text content for text block
+ *                           example: "Async/await is syntactic sugar over promises..."
+ *                         imageUrl:
+ *                           type: string
+ *                           description: URL of the image (for image block)
+ *                           example: "https://example.com/image.png"
+ *                         code:
+ *                           type: string
+ *                           description: Code snippet (for code block)
+ *                           example: "const example = async () => {}"
+ *                         embedUrl:
+ *                           type: string
+ *                           description: URL for embed content
+ *                           example: "https://www.youtube.com/embed/example"
+ *                         videoUrl:
+ *                           type: string
+ *                           description: Video URL (for video block)
+ *                           example: "https://example.com/video.mp4"
+ *                     styles:
+ *                       type: object
+ *                       description: Styling options for the block
+ *                       properties:
+ *                         bold:
+ *                           type: boolean
+ *                           example: true
+ *                         italic:
+ *                           type: boolean
+ *                           example: false
+ *                         quote:
+ *                           type: boolean
+ *                           example: false
+ *                         link:
+ *                           type: string
+ *                           description: Link for the content
+ *                           example: "https://example.com"
+ *                         textSize:
+ *                           type: string
+ *                           enum: ['small', 'normal', 'large']
+ *                           description: Size of the text
+ *                           example: 'normal'
+ *               tags:
+ *                 type: array
+ *                 description: Optional tags related to the blog
+ *                 items:
+ *                   type: string
+ *                 example: ["JavaScript", "Async", "Programming"]
+ *             required:
+ *               - title
+ *               - content
  *     responses:
  *       201:
  *         description: Blog created successfully
  *       401:
  *         description: Unauthorized
+ *       500:
+ *         description: Server error
  */
 router.post('/create', authMiddleware, BlogController.createBlog);
+
 
 /**
  * @swagger
@@ -119,7 +233,82 @@ router.get('/:id', BlogController.getBlogById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Blog'
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 description: Title of the blog
+ *                 example: "Understanding Async/Await in JavaScript"
+ *               imageUrl:
+ *                 type: string
+ *                 description: Optional background image URL for the blog title
+ *                 example: "https://example.com/background-image.png"
+ *               content:
+ *                 type: array
+ *                 description: Content blocks of the blog
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     type:
+ *                       type: string
+ *                       enum: ['text', 'image', 'code', 'embed', 'video']
+ *                       description: Type of content block
+ *                       example: 'text'
+ *                     data:
+ *                       type: object
+ *                       description: Data for the content block
+ *                       properties:
+ *                         text:
+ *                           type: string
+ *                           description: Text content for text block
+ *                           example: "Async/await is syntactic sugar over promises..."
+ *                         imageUrl:
+ *                           type: string
+ *                           description: URL of the image (for image block)
+ *                           example: "https://example.com/image.png"
+ *                         code:
+ *                           type: string
+ *                           description: Code snippet (for code block)
+ *                           example: "const example = async () => {}"
+ *                         embedUrl:
+ *                           type: string
+ *                           description: URL for embed content
+ *                           example: "https://www.youtube.com/embed/example"
+ *                         videoUrl:
+ *                           type: string
+ *                           description: Video URL (for video block)
+ *                           example: "https://example.com/video.mp4"
+ *                     styles:
+ *                       type: object
+ *                       description: Styling options for the block
+ *                       properties:
+ *                         bold:
+ *                           type: boolean
+ *                           example: true
+ *                         italic:
+ *                           type: boolean
+ *                           example: false
+ *                         quote:
+ *                           type: boolean
+ *                           example: false
+ *                         link:
+ *                           type: string
+ *                           description: Link for the content
+ *                           example: "https://example.com"
+ *                         textSize:
+ *                           type: string
+ *                           enum: ['small', 'normal', 'large']
+ *                           description: Size of the text
+ *                           example: 'normal'
+ *               tags:
+ *                 type: array
+ *                 description: Optional tags related to the blog
+ *                 items:
+ *                   type: string
+ *                 example: ["JavaScript", "Async", "Programming"]
+ *             required:
+ *               - title
+ *               - content
  *     responses:
  *       200:
  *         description: Blog updated successfully
@@ -129,6 +318,7 @@ router.get('/:id', BlogController.getBlogById);
  *         description: Blog not found
  */
 router.put('/:id', authMiddleware, BlogController.editBlog);
+
 
 /**
  * @swagger
@@ -200,7 +390,7 @@ router.post('/:id/like', authMiddleware, BlogController.likeBlog);
  *           schema:
  *             type: object
  *             properties:
- *               comment:
+ *               text:
  *                 type: string
  *                 example: "Great post!"
  *     responses:
@@ -289,7 +479,7 @@ router.delete('/:id/comments/:commentId', authMiddleware, BlogController.deleteC
  *           schema:
  *             type: object
  *             properties:
- *               comment:
+ *               text:
  *                 type: string
  *                 example: "Updated comment"
  *     responses:

@@ -3,11 +3,12 @@ const User = require("../models/User");
 
 // Create a blog
 exports.createBlog = async (req, res) => {
-  const { title, content, tags } = req.body;
+  const { title, titleBackgroundImageUrl, content, tags } = req.body;
 
   try {
     const blog = new Blog({
       title,
+      titleBackgroundImageUrl, // Handle background image URL
       content,
       tags,
       author: req.user.id,
@@ -20,6 +21,7 @@ exports.createBlog = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
 
 // Get all blogs
 exports.getAllBlogs = async (req, res) => {
@@ -60,7 +62,7 @@ exports.getBlogById = async (req, res) => {
 };
 // Edit blog
 exports.editBlog = async (req, res) => {
-  const { title, content, tags } = req.body;
+  const { title, titleBackgroundImageUrl, content, tags } = req.body;
   try {
     const blog = await Blog.findById(req.params.id);
     if (!blog) {
@@ -72,6 +74,7 @@ exports.editBlog = async (req, res) => {
         .json({ msg: "User not authorized to edit this blog" });
     }
     blog.title = title || blog.title;
+    blog.titleBackgroundImageUrl = titleBackgroundImageUrl || blog.titleBackgroundImageUrl; // Update background image if provided
     blog.content = content || blog.content;
     blog.tags = tags || blog.tags;
     blog.save();
@@ -82,6 +85,7 @@ exports.editBlog = async (req, res) => {
     return res.status(500).send("Server error");
   }
 };
+
 
 
 // Delete a blog

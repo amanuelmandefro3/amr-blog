@@ -32,7 +32,8 @@ const blockSchema = new mongoose.Schema({
 
 const blogSchema = new mongoose.Schema({
   title: { type: String, required: [true, "Title is required"] },
-  content: [blockSchema], // Array of content blocks
+  titleBackgroundImageUrl: { type: String }, // Optional field for title background image URL
+  content: [blockSchema], // Array of content blocks (unchanged)
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   tags: [String],
   createdAt: { type: Date, default: Date.now },
@@ -40,5 +41,6 @@ const blogSchema = new mongoose.Schema({
   shares: { type: Number, default: 0 }, // Counter for shares
   comments: [commentSchema] // Array of comment sub-documents
 });
+
 
 module.exports = mongoose.model("Blog", blogSchema);
