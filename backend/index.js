@@ -2,6 +2,7 @@ const express = require('express');
 const swaggerDocs = require('./swagger'); // Swagger docs
 const connectDB = require('./config/db');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const app = express();
@@ -16,11 +17,12 @@ swaggerDocs(app);
 connectDB();
 
 // Middleware for parsing JSON
+app.use(cookieParser());
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/blogs', require('./routes/blogRoutes'));
+app.use('/api/v1/auth', require('./routes/authRoutes'));
+app.use('/api/v1/blogs', require('./routes/blogRoutes'));
 // app.use('/api/recommend', require('./routes/recommendRoutes'));
 
 // Test Route

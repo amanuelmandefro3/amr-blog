@@ -1,21 +1,29 @@
-const { process_params } = require('express/lib/router')
+const User = require("../models/User");
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-module.exports = function (req, res, next){
-    const token = req.header('Authorization')
+
+module.exports = async(req, res, next)=>{
+    const token =
+      req.cookies?.accessToken ||
+      req.header("Authorization")?.replace("Bearer ", "");
     if(!token){
         return res.status(401).json({msg:'No token, authorization denied'})
     }
+    console.log("Access Token", token)
     try{
-        const decoded = jwt.verify(token.split(' ')[1], process.env.JWT_SECRET);
-        req.user = decoded.user;
+        const decoded = jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
+       
+        const user = await User.findById(decoded._id).select('-password -refreshToken -verificationToken');
+
+        if(!user){
+            return res.status(404).json({msg:'No user found'})
+        }
+        req.user = user
         next()
-
-
     }catch(error){
-        console.error(error.message)
-        res.status(401).json({msg:'Token is not valid'})
+        // console.error(error.message)
+        res.status(401).json({msg:error.message})
     }
 
     

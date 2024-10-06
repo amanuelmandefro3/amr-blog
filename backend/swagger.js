@@ -12,7 +12,7 @@ const options = {
     },
     servers: [
       {
-        url: 'https://amr-blog.onrender.com/api', // Change to your Render deployment URL
+        url: 'https://amr-blog.onrender.com/api/v1',
       },
     ],
     components: {
@@ -30,13 +30,13 @@ const options = {
       },
     ],
   },
-  apis: ['./routes/*.js'], // Points to your routes folder
+  apis: ['./routes/*.js'], 
 };
 
 const swaggerSpec = swaggerJsdoc(options);
 
 function swaggerDocs(app) {
-  app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
 module.exports = swaggerDocs;
