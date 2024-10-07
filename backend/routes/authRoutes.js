@@ -13,12 +13,44 @@ const {
 } = require("../controllers/authController");
 const authMiddleware = require("../middlewares/authMiddleware");
 
+
+
 /**
- * @swagger
- * tags:
- *   name: Authentication
- *   description: Authentication endpoints
- */
+* @swagger
+* components:
+*   schemas:
+*     User:
+*       type: object
+*       required:
+*         - name
+*         - email
+*         - password
+*         - token
+*         - oldPassword
+*         - newPassword
+*       properties:
+*         name:
+*           type: string
+*           description: The user's name
+*         email:
+*           type: string
+*           description: The user's email
+*         password:
+*           type: string
+*           description: The user's password
+*         token:
+*           type: string
+*           description: The user's token for email verification and password reset
+*         oldPassword:
+*           type: string
+*           description: The user's old password
+*         newPassword:
+*           type: string
+*           description: The user's new password
+*         refreshToken:
+*           type: string
+*           description: The user's token for refreshing the access token
+*/
 
 /**
  * @swagger
